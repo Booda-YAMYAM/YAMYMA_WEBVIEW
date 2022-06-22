@@ -2,7 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { markerdata } from "../components/Data/markerData";
 import "./WebView.css";
+import $ from "jquery";
+
 const { kakao } = window;
+
+var clickedOverlay = null;
+var selectedMarker = null;
 
 /*  Data 변수명
 
@@ -34,8 +39,8 @@ const WebView = () => {
 
     var createImageMarker = (src, size, markerPosition) => {
       var imageSize = new kakao.maps.Size(size[0], size[1]);
-      var markerImage = new kakao.maps.MarkerImage(src, imageSize);
 
+      var markerImage = new kakao.maps.MarkerImage(src, imageSize);
       // 마커 생성
       const marker = new kakao.maps.Marker({
         map: map,
@@ -47,13 +52,20 @@ const WebView = () => {
       return marker;
     };
 
+    var createImage = (src, size) => {
+      var imageSize = new kakao.maps.Size(size[0], size[1]);
+      var markerImage = new kakao.maps.MarkerImage(src, imageSize);
+      return markerImage;
+    };
+
     // blue는 크기 40,40
-    var marker_blue_src =
-      "https://user-images.githubusercontent.com/52441923/175064993-4101106f-1d37-4158-8307-3a30e81b4020.png";
+    var marker_blue_src = require("../assets/marker_blue.png");
 
     // yellow는 크기 25,25
-    var marker_yellow_src =
-      "https://user-images.githubusercontent.com/52441923/175069715-16e33d75-6761-4907-9c8c-eb99292a07a7.png";
+    var marker_yellow_src = require("../assets/marker_yellow.png");
+
+    var blue_img = createImage(marker_blue_src, [40, 40]);
+    var yellow_img = createImage(marker_yellow_src, [25, 25]);
 
     markerdata.map((el, index) => {
       var markerPosition = new kakao.maps.LatLng(
@@ -75,7 +87,7 @@ const WebView = () => {
         '             "<div class="name">' +
         el.NAME +
         "</div>" +
-        '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+        '            <div class="close" id="close" title="닫기"></div>' +
         "        </div>" +
         '        <div class="body">' +
         '            <div class="img">' +
@@ -108,20 +120,26 @@ const WebView = () => {
         position: marker.getPosition(),
       });
 
-      // 지도에 확대 축소 컨트롤을 생성한다
-      var zoomControl = new kakao.maps.ZoomControl();
-
-      // 지도의 우측에 확대 축소 컨트롤을 추가한다
-      map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
-
-      function closeOverlay() {
-        overlay.setMap(null);
-      }
+      overlay.setMap(null);
 
       kakao.maps.event.addListener(marker, "click", function () {
+        if (clickedOverlay) {
+          clickedOverlay.setMap(null);
+        }
+        if (!selectedMarker || selectedMarker !== marker) {
+          // 클릭된 마커 객체가 null이 아니면
+          // 클릭된 마커의 이미지를 기본 이미지로 변경하고
+          !!selectedMarker && selectedMarker.setImage(yellow_img);
+
+          // 현재 클릭된 마커의 이미지는 클릭 이미지로 변경합니다
+          marker.setImage(blue_img);
+        }
+
         overlay.setMap(map);
+        clickedOverlay = overlay;
+        selectedMarker = marker;
+
         map.setCenter(markerPosition);
-        marker = createImageMarker(marker_blue_src, [40, 40], markerPosition);
       });
     });
   };
