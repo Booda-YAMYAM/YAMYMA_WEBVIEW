@@ -1,32 +1,18 @@
 /* global kakao */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import KakaoMapScript from "../components/kakaoMapScript";
 import { markerdata } from "../components/Data/markerData";
 
 const { kakao } = window;
 
-const Desktop = ({ children }) => {
-  const isDesktop = useMediaQuery({ minWidth: 992 });
-  return isDesktop ? children : null;
-};
-
-const Tablet = ({ children }) => {
-  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 991 });
-  return isTablet ? children : null;
-};
-
-const Mobile = ({ children }) => {
-  const isMobile = useMediaQuery({ maxWidth: 767 });
-  return isMobile ? children : null;
-};
-
-const Default = ({ children }) => {
-  const isNotMobile = useMediaQuery({ minWidth: 768 });
-  return isNotMobile ? children : null;
-};
+// const isPc = useMediaQuery({
+//     query : "(min-width:1024px)"
+//   });
 
 const WebView = () => {
+  const [isClicked, setIsClicked] = useState(false);
+
   useEffect(() => {
     mapscript();
   }, []);
@@ -43,12 +29,33 @@ const WebView = () => {
     markerdata.map((el, index) => {
       var markerPosition = new kakao.maps.LatLng(el.lat, el.lng);
       // 마커 생성
-      new kakao.maps.Marker({
+      const marker = new kakao.maps.Marker({
         map: map,
         // 마커 표시 위치
         position: markerPosition,
-        // 마커에 hover 시 title 나타남
-        title: el.title,
+        clickable: true,
+      });
+      // 마커에 표시될 인포윈도우
+      var infowindow = new kakao.maps.InfoWindow({
+        content: el.title,
+      });
+      // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+      // 이벤트 리스너로는 클로저를 만들어 등록합니다
+      // 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+      //   kakao.maps.event.addListener(
+      //     marker,
+      //     "mouseover",
+      //     makeOverListener(map, marker, infowindow)
+      //   );
+      //   kakao.maps.event.addListener(
+      //     marker,
+      //     "mouseout",
+      //     makeOutListener(infowindow)
+      //   );
+      kakao.maps.event.addListener(marker, "click", function (e) {
+        infowindow.open(map, marker);
+        map.setCenter(markerPosition);
+        //infowindow.close();
       });
     });
 
@@ -72,15 +79,6 @@ const WebView = () => {
 
     // // 지도의 중심을 결과값으로 받은 위치로 이동
     // map.setCenter(markerPosition);
-
-    // 클릭 이벤트
-    //kakao.maps.event.addListener(map, "click", function (mouseEvent) {
-    //   var latlng = mouseEvent.latlng; // 클릭한 위도, 경도 정보
-    //   marker.setPosition(latlng);
-    //   console.log(
-    //     `'클릭한 위치의 위도는 ${latlng.getLat()}이고, 경도는 ${latlng.getLng()}입니다`
-    //   );
-    //});
   };
 
   return (
