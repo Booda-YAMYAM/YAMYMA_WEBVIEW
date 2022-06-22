@@ -1,18 +1,24 @@
 /* global kakao */
 import React, { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import KakaoMapScript from "../components/kakaoMapScript";
 import { markerdata } from "../components/Data/markerData";
-
+import "./WebView.css";
 const { kakao } = window;
 
-// const isPc = useMediaQuery({
-//     query : "(min-width:1024px)"
-//   });
+/*  Data 변수명
+
+    RESTARANT_ID: 1,
+    USER_ID: 1,
+    NAME: "콜드스퀘어", // 이름
+    PHONE_NUMBER: "010-1111-1111", // 전화번호
+    Y_COORDINATE: 37.62197524055062, // 위도
+    X_COORDINATE: 127.16017523675508, // 경도
+    ADDRESS: "대전광역시 00구 00동",
+    HEART_COUNT: 3,
+    SECTOR: "분식",
+    LAST_UPDATED: Date(),
+    DATE_CREATED: Date(), */
 
 const WebView = () => {
-  const [isClicked, setIsClicked] = useState(false);
-
   useEffect(() => {
     mapscript();
   }, []);
@@ -26,71 +32,105 @@ const WebView = () => {
 
     const map = new kakao.maps.Map(container, options);
 
-    markerdata.map((el, index) => {
-      var markerPosition = new kakao.maps.LatLng(el.lat, el.lng);
+    var createImageMarker = (src, size, markerPosition) => {
+      var imageSize = new kakao.maps.Size(size[0], size[1]);
+      var markerImage = new kakao.maps.MarkerImage(src, imageSize);
+
       // 마커 생성
       const marker = new kakao.maps.Marker({
         map: map,
         // 마커 표시 위치
         position: markerPosition,
         clickable: true,
+        image: markerImage,
       });
-      // 마커에 표시될 인포윈도우
-      var infowindow = new kakao.maps.InfoWindow({
-        content: el.title,
+      return marker;
+    };
+
+    // blue는 크기 40,40
+    var marker_blue_src =
+      "https://user-images.githubusercontent.com/52441923/175064993-4101106f-1d37-4158-8307-3a30e81b4020.png";
+
+    // yellow는 크기 25,25
+    var marker_yellow_src =
+      "https://user-images.githubusercontent.com/52441923/175069715-16e33d75-6761-4907-9c8c-eb99292a07a7.png";
+
+    markerdata.map((el, index) => {
+      var markerPosition = new kakao.maps.LatLng(
+        el.Y_COORDINATE,
+        el.X_COORDINATE
+      );
+
+      var marker = createImageMarker(
+        marker_yellow_src,
+        [25, 25],
+        markerPosition
+      );
+
+      var content =
+        '<div class="wrap">' +
+        '    <div class="info">' +
+        '        <div class="title">' +
+        '            <div class="yellowLine"></div>' +
+        '             "<div class="name">' +
+        el.NAME +
+        "</div>" +
+        '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+        "        </div>" +
+        '        <div class="body">' +
+        '            <div class="img">' +
+        '                <img src="https://user-images.githubusercontent.com/52441923/175064993-4101106f-1d37-4158-8307-3a30e81b4020.png" width="73" height="70">' +
+        "           </div>" +
+        '            <div class="desc">' +
+        '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' +
+        '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' +
+        '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' +
+        "            </div>" +
+        "        </div>" +
+        "    </div>" +
+        "</div>";
+      /*  위 div 방식을 아래처럼 바꿔야할 것 같아요
+        var content = document.createElement('div');
+        content.setAttribute('class','wrap');
+
+        var info = document.createElement('div');
+        info.setAttribute('class','info');
+        info.appendChild(document.createTextNode(pos.title));
+        content.appendChild(info);
+    
+        var closeBtn = document.createElement('button');
+        closeBtn.appendChild(document.createTextNode('닫기'));
+         */
+
+      var overlay = new kakao.maps.CustomOverlay({
+        content: content,
+        map: map,
+        position: marker.getPosition(),
       });
-      // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-      // 이벤트 리스너로는 클로저를 만들어 등록합니다
-      // 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-      //   kakao.maps.event.addListener(
-      //     marker,
-      //     "mouseover",
-      //     makeOverListener(map, marker, infowindow)
-      //   );
-      //   kakao.maps.event.addListener(
-      //     marker,
-      //     "mouseout",
-      //     makeOutListener(infowindow)
-      //   );
-      kakao.maps.event.addListener(marker, "click", function (e) {
-        infowindow.open(map, marker);
+
+      // 지도에 확대 축소 컨트롤을 생성한다
+      var zoomControl = new kakao.maps.ZoomControl();
+
+      // 지도의 우측에 확대 축소 컨트롤을 추가한다
+      map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
+
+      function closeOverlay() {
+        overlay.setMap(null);
+      }
+
+      kakao.maps.event.addListener(marker, "click", function () {
+        overlay.setMap(map);
         map.setCenter(markerPosition);
-        //infowindow.close();
+        marker = createImageMarker(marker_blue_src, [40, 40], markerPosition);
       });
     });
-
-    // var markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-
-    // var marker = new kakao.maps.Marker({
-    //   position: markerPosition,
-    //   map: map,
-    // });
-
-    // marker.setMap(map);
-
-    // //장소에 대한 설명을 표시
-    // var infowindow = new kakao.maps.InfoWindow({
-    //   content:
-    //     '<div style="width:150px;text-align:center;padding:6px 0;">' +
-    //     "안녕" +
-    //     "</div>",
-    // });
-    // infowindow.open(map, marker);
-
-    // // 지도의 중심을 결과값으로 받은 위치로 이동
-    // map.setCenter(markerPosition);
   };
 
   return (
-    // <div>
-    //   <Desktop id="map" style={{ width: "500px", height: "400px" }}></Desktop>
-    // </div>
-    // <div>
-    //   <div id="map" style={{ width: "100%", height: "100vh" }}></div>
-    // </div>
     <div>
       <div id="Mymap" style={{ width: "100%", height: "100vh" }}></div>
     </div>
   );
 };
+
 export default WebView;
