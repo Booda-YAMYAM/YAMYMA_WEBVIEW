@@ -1,5 +1,5 @@
 /* global kakao */
-import React, { useEffect, useState } from "react";
+import React, { createElement, useEffect, useState } from "react";
 import { markerdata } from "../components/Data/markerData";
 import "./WebView.css";
 import $ from "jquery";
@@ -37,6 +37,13 @@ const WebView = () => {
 
     const map = new kakao.maps.Map(container, options);
 
+    // blue는 크기 40,40
+    var marker_blue_src = require("../assets/marker_blue.png");
+
+    // yellow는 크기 25,25
+    var marker_yellow_src = require("../assets/marker_yellow.png");
+
+    // 지정된 이미지로 marker 생성하는 함수
     var createImageMarker = (src, size, markerPosition) => {
       var imageSize = new kakao.maps.Size(size[0], size[1]);
 
@@ -52,21 +59,22 @@ const WebView = () => {
       return marker;
     };
 
+    // marker의 image 속성에 넣을 지정된 이미지
     var createImage = (src, size) => {
       var imageSize = new kakao.maps.Size(size[0], size[1]);
       var markerImage = new kakao.maps.MarkerImage(src, imageSize);
       return markerImage;
     };
 
-    // blue는 크기 40,40
-    var marker_blue_src = require("../assets/marker_blue.png");
-
-    // yellow는 크기 25,25
-    var marker_yellow_src = require("../assets/marker_yellow.png");
-
     var blue_img = createImage(marker_blue_src, [40, 40]);
     var yellow_img = createImage(marker_yellow_src, [25, 25]);
 
+    /* zoom  */
+    // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성
+    var zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
+
+    // 음식점 data map
     markerdata.map((el, index) => {
       var markerPosition = new kakao.maps.LatLng(
         el.Y_COORDINATE,
@@ -79,28 +87,28 @@ const WebView = () => {
         markerPosition
       );
 
-      var content =
-        '<div class="wrap">' +
-        '    <div class="info">' +
-        '        <div class="title">' +
-        '            <div class="yellowLine"></div>' +
-        '             "<div class="name">' +
-        el.NAME +
-        "</div>" +
-        '            <div class="close" id="close" title="닫기"></div>' +
-        "        </div>" +
-        '        <div class="body">' +
-        '            <div class="img">' +
-        '                <img src="https://user-images.githubusercontent.com/52441923/175064993-4101106f-1d37-4158-8307-3a30e81b4020.png" width="73" height="70">' +
-        "           </div>" +
-        '            <div class="desc">' +
-        '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' +
-        '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' +
-        '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' +
-        "            </div>" +
-        "        </div>" +
-        "    </div>" +
-        "</div>";
+      //overlay content
+      var content = `<div class="wrap">
+            <div class="info">
+                <div class="title">
+                    <div class="yellowLine"></div>
+                     "<div class="name">
+        ${el.NAME} +
+        </div>
+                    <div class="close" onclick="closeOverlay()" id="close" title="닫기"></div>
+                </div>" +
+                <div class="body">
+                    <div class="img">
+                        <img src="https://user-images.githubusercontent.com/52441923/175064993-4101106f-1d37-4158-8307-3a30e81b4020.png" width="73" height="70">
+                   </div>
+                    <div class="desc">
+                        <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>
+                        <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>
+                        <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>;`;
       /*  위 div 방식을 아래처럼 바꿔야할 것 같아요
         var content = document.createElement('div');
         content.setAttribute('class','wrap');
@@ -139,7 +147,8 @@ const WebView = () => {
         clickedOverlay = overlay;
         selectedMarker = marker;
 
-        map.setCenter(markerPosition);
+        // 클릭한 marker의 위치를 map의 센터로
+        //map.setCenter(markerPosition);
       });
     });
   };
