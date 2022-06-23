@@ -1,7 +1,8 @@
 /* global kakao */
 import React, { createElement, useEffect, useState } from "react";
-import { markerdata } from "../components/Data/markerData";
+import { markerdata } from "../../components/Data/markerData";
 import "./WebView.css";
+import RestaurantModal from "../../components/Modal/RestaurantModal";
 import $ from "jquery";
 
 const { kakao } = window;
@@ -24,9 +25,22 @@ var selectedMarker = null;
     DATE_CREATED: Date(), */
 
 const WebView = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   useEffect(() => {
     mapscript();
   }, []);
+
+  // 모달 여는 함수
+  const openModal = () => {
+    setModalOpen(true);
+    console.log("하이");
+  };
+
+  // 모달 닫는 함수
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const mapscript = () => {
     var container = document.getElementById("Mymap"),
@@ -45,10 +59,10 @@ const WebView = () => {
     const map = new kakao.maps.Map(container, options);
 
     // blue는 크기 40,40
-    var marker_blue_src = require("../assets/marker_blue.png");
+    var marker_blue_src = require("../../assets/marker_blue.png");
 
     // yellow는 크기 25,25
-    var marker_yellow_src = require("../assets/marker_yellow.png");
+    var marker_yellow_src = require("../../assets/marker_yellow.png");
 
     // 지정된 이미지로 marker 생성하는 함수
     var createImageMarker = (src, size, markerPosition) => {
@@ -84,8 +98,8 @@ const WebView = () => {
     // 음식점 data map
     markerdata.map((el, index) => {
       var markerPosition = new kakao.maps.LatLng(
-        el.Y_COORDINATE,
-        el.X_COORDINATE
+        el.y_coordinate,
+        el.x_coordinate
       );
 
       var marker = createImageMarker(
@@ -100,7 +114,7 @@ const WebView = () => {
                 <div class="title" >
                     <div class="yellowLine"></div>
                      <div class="name">
-        ${el.NAME} 
+        ${el.restaurantName} 
         </div>
         <div class="sector">
         ${el.SECTOR}
@@ -113,7 +127,7 @@ const WebView = () => {
                         연락처
                         </div>
                         <div class="phone_number">
-                          ${el.PHONE_NUMBER}
+                          ${el.restaurantNumber}
                           </div>
                         </div>
                       <div class = "open row">
@@ -133,7 +147,7 @@ const WebView = () => {
                         </div>
                       </div>
                       <div class="detail">
-                      <a herf="${el.DETAIL_URL}" target="_blank">가게 자세히 보러가기</a>
+                      <a href="#" onclick="${openModal()}">가게 자세히 보러가기</a>
                       </div>
                     </div>
                 </div>
@@ -152,22 +166,27 @@ const WebView = () => {
         closeBtn.appendChild(document.createTextNode('닫기'));
          */
 
+      // 이유는 모르겠으나 ㅠㅠ map이 너무 많이 생겨 있어서 삭제합니다!
+      while (document.getElementById("link").childNodes.length > 1) {
+        document
+          .getElementById("link")
+          .removeChild(document.getElementById("link").childNodes[0]);
+      }
+
       var overlay = new kakao.maps.CustomOverlay({
         content: content,
         map: map,
         position: marker.getPosition(),
+        clickable: true,
       });
 
       overlay.setMap(null);
       // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
 
-      function closeOverlay() {
-        overlay.setMap(null);
-      }
-
-      // 맵을 눌렀을때 마커 삭제
+      // 맵을 눌렀을때 오버레이 삭제, 마커 색상 노란색으로
       kakao.maps.event.addListener(map, "click", () => {
         overlay.setMap(null);
+        marker.setImage(yellow_img);
       });
 
       kakao.maps.event.addListener(marker, "click", function () {
@@ -195,7 +214,20 @@ const WebView = () => {
 
   return (
     <div>
-      <div id="Mymap" style={{ width: "100%", height: "100vh" }}></div>
+      <div id="link" style={{ position: "relation", zIndex: 2 }}>
+        <RestaurantModal
+          open={modalOpen}
+          close={closeModal}
+          header="Modal heading"
+        >
+          모달입니당
+        </RestaurantModal>
+      </div>
+
+      <div
+        id="Mymap"
+        style={{ width: "100%", height: "100vh", zIndex: 1 }}
+      ></div>
     </div>
   );
 };

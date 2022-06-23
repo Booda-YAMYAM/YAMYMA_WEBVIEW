@@ -1,0 +1,77 @@
+.body {
+  width: 100vw;
+  height: 100vh;
+}
+.res_img {
+  width: 35%;
+  height: 200px;
+}
+
+.detail_container {
+  width: 35%;
+  border-color: black;
+  border-width: 1;
+  border-radius: 20px;
+}
+
+.top_detail_container {
+}
+
+.top {
+}
+
+.row {
+  flex-direction: row;
+}
+
+.col {
+  flex-direction: column;
+}
+
+.title {
+  font-size: 23px;
+}
+
+.sector {
+  font-size: 11px;
+}
+
+.bookmark {
+  font-size: 10px;
+}
+
+.star_img {
+  width: 20px;
+  height: 20px;
+}
+
+.middle {
+}
+
+.phone {
+}
+
+.open_time {
+}
+
+.detail_title {
+  font-size: 12px;
+}
+
+.detail_content {
+  font-size: 11px;
+}
+
+.heart_btn {
+  font-size: 14px;
+}
+
+.menu_container {
+}
+
+.popular_menu {
+}
+
+.category_title {
+  font-size: 15px;
+}

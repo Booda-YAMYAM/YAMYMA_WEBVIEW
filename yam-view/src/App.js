@@ -1,6 +1,6 @@
 import React from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import WebView from "./pages/WebView";
+import WebView from "./pages/WebView/WebView";
 import axios from "axios";
 
 //axios.defaults.withCredentials = true;
