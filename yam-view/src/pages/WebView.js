@@ -3,6 +3,7 @@ import React, { createElement, useEffect, useState } from "react";
 import "./WebView.css";
 import DetailModal from "../components/DetiaModal";
 import $ from "jquery";
+import { dummyData } from "../components/Data/markerData";
 import { filterTag } from "../utils/filterTag";
 import { findCategoryEtoK, findCategoryKtoE } from "../utils/findCategory";
 import { wait } from "../utils/wait";
@@ -135,9 +136,7 @@ const WebView = () => {
     map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 
     let data;
-    let dummyData = await fetch("/DUMMY_DATA.json").then((res) => res.json());
 
-    console.log(dummyData);
     // 음식점 data map
     if (result.tagList) {
       let categoryList = result.tagList
@@ -333,12 +332,14 @@ const WebView = () => {
                         .map((menu) => {
                           return `<div class="menu_item">
                      
-                        <img class="menu_img" src="${menu.imageUrl}" alt="${menu.menuName}" />
+                        <img class="menu_img" src="${menu.menuImages}" alt="${menu.menuName}" />
                         <div class="item-detail_row">
                         <div class="yellowLineH"></div>
                         <div class="colum">
                         <div class="menu_name">${menu.menuName}</div>
                         <div class="menu_price">${menu.price}</div>
+                        </div>
+                        </div>
                       </div>`;
                         })
                         .join("")}
