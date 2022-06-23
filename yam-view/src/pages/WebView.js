@@ -1,8 +1,9 @@
 /* global kakao */
 import React, { createElement, useEffect, useState } from "react";
-import { markerdata } from "../components/Data/markerData";
+import { dummyData, markerdata } from "../components/Data/markerData";
 import "./WebView.css";
 import $ from "jquery";
+import { filterTag } from "../utils/filterTag";
 
 const { kakao } = window;
 
@@ -128,6 +129,11 @@ const WebView = () => {
     map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 
     // 음식점 data map
+    if (result.tagList) {
+      let filterData = filterTag(dummyData, result.tagList.split(","));
+      console.log(filterData);
+    }
+
     markerdata.map((el, index) => {
       var markerPosition = new kakao.maps.LatLng(
         el.Y_COORDINATE,
