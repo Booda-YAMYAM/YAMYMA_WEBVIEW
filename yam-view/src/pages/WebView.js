@@ -4,6 +4,7 @@ import { dummyData, markerdata } from "../components/Data/markerData";
 import "./WebView.css";
 import $ from "jquery";
 import { filterTag } from "../utils/filterTag";
+import { findCategoryEtoK, findCategoryKtoE } from "../utils/findCategory";
 
 const { kakao } = window;
 
@@ -41,7 +42,11 @@ const requestPermission = () => {
     DATE_CREATED: Date(), */
 
 const WebView = () => {
-  const [result, setResult] = useState({});
+  const [result, setResult] = useState({
+    tagList: "",
+    openTime: "",
+    dist: "",
+  });
 
   /** react native 환경에서만 가능 */
   const onMessageHandler = (e) => {
@@ -128,16 +133,23 @@ const WebView = () => {
     var zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 
+    let data;
     // 음식점 data map
     if (result.tagList) {
-      let filterData = filterTag(dummyData, result.tagList.split(","));
-      console.log(filterData);
+      let categoryList = result.tagList
+        .split(",")
+        .map((el) => findCategoryKtoE(el));
+      let filterData = filterTag(dummyData, categoryList);
+
+      data = [...filterData];
+    } else {
+      data = [...dummyData];
     }
 
-    markerdata.map((el, index) => {
+    data.map((el, index) => {
       var markerPosition = new kakao.maps.LatLng(
-        el.Y_COORDINATE,
-        el.X_COORDINATE
+        el.y_coordinate,
+        el.x_coordinate
       );
 
       var marker = createImageMarker(
@@ -152,10 +164,10 @@ const WebView = () => {
                 <div class="title" >
                     <div class="yellowLine"></div>
                      <div class="name">
-        ${el.NAME} 
+        ${el.restaurantName} 
         </div>
         <div class="sector">
-        ${el.SECTOR}
+        ${findCategoryEtoK(el.category)}
         </div>
         </div>
                 <div class="body">
@@ -165,7 +177,7 @@ const WebView = () => {
                         연락처
                         </div>
                         <div class="phone_number">
-                          ${el.PHONE_NUMBER}
+                          ${el.restaurantNumber}
                           </div>
                         </div>
                       <div class = "open row">
@@ -173,7 +185,7 @@ const WebView = () => {
                         영업시간
                         </div>
                         <div class="open_time">
-                        ${el.OPEN_TIME}
+                        ${`오전 9시 ~ 오후 6시`}
                         </div>
                       </div>
                       <div class = "menu row">
@@ -181,11 +193,13 @@ const WebView = () => {
                         대표메뉴
                         </div>
                         <div class="main_menu">
-                        ${el.MAIN_MENU}
+                        ${el.menus.map((el) => el.menuName).join(" , ")}
                         </div>
                       </div>
                       <div class="detail">
-                      <a herf="${el.DETAIL_URL}" target="_blank">가게 자세히 보러가기</a>
+                      <a herf="${
+                        el.DETAIL_URL
+                      }" target="_blank">가게 자세히 보러가기</a>
                       </div>
                     </div>
                 </div>

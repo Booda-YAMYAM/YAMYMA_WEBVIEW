@@ -49,8 +49,8 @@ export const dummyData = [
     restaurantId: 1,
     restaurantName: "카페", // 이름
     restaurantNumber: "010-1111-1111", // 전화번호
-    y_coordinate: 37.62197524055062, // 위도
-    x_coordinate: 127.16017523675508, // 경도
+    y_coordinate: 37.620842424005616, // 위도
+    x_coordinate: 127.1583774403176, // 경도
     address: "대전광역시 00구 00동",
     heart: 3,
     category: "cafe",
@@ -68,8 +68,8 @@ export const dummyData = [
     restaurantId: 1,
     restaurantName: "일본집", // 이름
     restaurantNumber: "010-1111-1111", // 전화번호
-    y_coordinate: 37.62197524055062, // 위도
-    x_coordinate: 127.16017523675508, // 경도
+    y_coordinate: 37.624915253753194, // 위도
+    x_coordinate: 127.15122688059974, // 경도
     address: "대전광역시 00구 00동",
     heart: 3,
     category: "japan",
@@ -87,8 +87,8 @@ export const dummyData = [
     restaurantId: 1,
     restaurantName: "중국집", // 이름
     restaurantNumber: "010-1111-1111", // 전화번호
-    y_coordinate: 37.62197524055062, // 위도
-    x_coordinate: 127.16017523675508, // 경도
+    y_coordinate: 37.62456273069659, // 위도
+    x_coordinate: 127.15211256646381, // 경도
     address: "대전광역시 00구 00동",
     heart: 3,
     category: "china",
