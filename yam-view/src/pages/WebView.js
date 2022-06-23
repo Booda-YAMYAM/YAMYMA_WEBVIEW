@@ -78,7 +78,7 @@ const WebView = () => {
     return () => {
       receiver.removeEventListener("message", onMessageHandler);
     };
-  }, []);
+  }, [result]);
 
   const mapscript = () => {
     var container = document.getElementById("Mymap"),
