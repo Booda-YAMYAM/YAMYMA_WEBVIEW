@@ -40,15 +40,20 @@ const requestPermission = () => {
     DATE_CREATED: Date(), */
 
 const WebView = () => {
-  const [category, setCategory] = useState("전체");
+  const [result, setResult] = useState({ tagList: "", openTime: "", dist: "" });
 
   /** react native 환경에서만 가능 */
   const onMessageHandler = (e) => {
     const event = JSON.parse(e.data);
     window.ReactNativeWebView.postMessage(JSON.stringify({ event: event }));
-    if (event.changeText) {
-      setCategory(event.changeText);
-      alert(event.changeText);
+    if (event) {
+      setResult({
+        tagList: event.tagList,
+        openTime: event.openTime,
+        dist: event.dist,
+      });
+      alert(event.tagList);
+      console.log(event);
     }
   };
 
