@@ -6,7 +6,6 @@ import DetailModal from "../components/DetiaModal";
 import $ from "jquery";
 import { filterTag } from "../utils/filterTag";
 import { findCategoryEtoK, findCategoryKtoE } from "../utils/findCategory";
-import heartModal from "../components/Modals/heartModal";
 
 const { kakao } = window;
 
@@ -309,101 +308,34 @@ const WebView = () => {
         console.log(document.querySelector(".detail"));
         document.querySelector(".detail").addEventListener("click", (e) => {
           console.log(e.target);
+          // 상세보기 누르면 모달창이 나옴
+          // 이쪽에 작성하면 될듯!
+          // const heartModal = `
+          // <div class="background">
 
-          const markUp = `
+          //       <img id="heartImg" class="heartImg" src="../assets/heart.png" alt="하트이미지"/>
+
+          //  <div>
+          // `;
+
+          const heartModal = `
           <div class="background">
-          <div class="window">
-            <div class="popup">
-              <button id="close">팝업닫기</button>
-            </div>
-          <div>
-          <div>
-          `;
-
-          const temp = `
-          <div class="modal">
-            <div class="body">
-              <div>
-                <img
-                  class="res_img"
-                  src={require("../../assets/restaurantImg.png")}
-                  alt="가게사진"
-                />
-              </div>
-              <div class="detail_container">
-                <div class="top_detail_container">
-                  <div class="top row">
-                    <div class="title">어쩌구 저쩌구 식당</div>
-                    <div class="sector">한식</div>
-                    <div class="bookmark">즐겨찾기</div>
-                    <img
-                      class="star_img"
-                      src={require("../../assets/star.png")}
-                      alt="즐겨찾기사진"
-                    />
-                  </div>
-                  <div class="middle">
-                    <div class="phone row">
-                      <div class="detail_title">연락처</div>
-                      <div class="detail_content">010-0000-0000</div>
-                    </div>
-                    <div class="open_time row">
-                      <div class="detail_title">영업 시간</div>
-                      <div class="detail_content">매일 오전 8시-오후 11시</div>
-                    </div>
-                    <div class="open_time row">
-                      <div class="detail_title">가게 주소</div>
-                      <div class="detail_content">
-                        서울특별시 어쩌구 저쩌동 00-00 0층{" "}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="bottom row">
-                    <button class="heart_btn">
-                      사장님께 감사의 하트 보내기
-                    </button>
-                  </div>
-                </div>
-                {/* 카테고리 부분 시작*/}
-                <div class="bottom_detail_container">
-                  <div class="menu_container">
-                    <div class="popular_menu_title row">
-                      <div class="category_title">대표 메뉴</div>
-                      <img
-                        src={require("../../assets/lineLeftImg.png")}
-                        alt="동그라미"
-                      />
-                      <div class="yello_line"></div>
-                    </div>
-                    <div class="popular_menu_content ">
-                      <img
-                        src={require("../../assets/popular_menu.png")}
-                        alt="대표메뉴사진"
-                      />
-                      <div class="content_detail row">
-                        <div class="yellowLine"></div>
-                        <div class="text col">
-                          <div>칠색 비빔밥</div>
-                          <div>7,000원</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
+              
+                <img id="heartImg" class="heartImg" src="https://user-images.githubusercontent.com/52441923/175321357-f82ceb65-f6eb-4903-a7d1-d5dd6fa187fa.png" alt="하트이미지"/>
+              
+           <div>
           `;
 
           // console;
           console.log(document.body);
-          document.body.insertAdjacentHTML("beforebegin", markUp);
+
+          document.body.insertAdjacentHTML("beforebegin", heartModal);
+
+          document.querySelector(".background").style.backgroundColor =
+            "transparent";
 
           document.querySelector(".background").classList.add("show");
-
-          document.querySelector("#close").addEventListener("click", () => {
-            document.querySelector(".background").classList.remove("show");
-          });
+          document.querySelector(".heartImg").style.transitionDuration = "1s";
         });
 
         clickedOverlay = overlay;
