@@ -34,6 +34,7 @@ export const dummyData = [
     x_coordinate: 127.16017523675508, // 경도
     address: "대전광역시 00구 00동",
     heart: 3,
+    star: true,
     category: "korea",
     menus: [
       {
@@ -53,6 +54,7 @@ export const dummyData = [
     x_coordinate: 127.1583774403176, // 경도
     address: "대전광역시 00구 00동",
     heart: 3,
+    star: true,
     category: "cafe",
     menus: [
       {
@@ -72,6 +74,7 @@ export const dummyData = [
     x_coordinate: 127.15122688059974, // 경도
     address: "대전광역시 00구 00동",
     heart: 3,
+    star: false,
     category: "japan",
     menus: [
       {
@@ -91,6 +94,7 @@ export const dummyData = [
     x_coordinate: 127.15211256646381, // 경도
     address: "대전광역시 00구 00동",
     heart: 3,
+    star: false,
     category: "china",
     menus: [
       {

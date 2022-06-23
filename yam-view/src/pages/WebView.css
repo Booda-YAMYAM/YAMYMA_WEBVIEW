@@ -165,7 +165,7 @@
   font-weight: lighter;
   border-radius: 10px;
   font-size: 12px;
-  margin-right: 10px;
+  margin-right: 40px;
 }
 
 .content{
@@ -208,4 +208,9 @@
 
 .bold{
   font-weight: bold;
+}
+
+.star{
+  position : absolute;
+  right: 15px;
 }

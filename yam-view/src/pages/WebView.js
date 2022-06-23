@@ -169,6 +169,9 @@ const WebView = () => {
         <div class="sector">
         ${findCategoryEtoK(el.category)}
         </div>
+        <div class='star'>
+        <imglocation>
+        </div>
         </div>
                 <div class="body">
                     <div class="content">
@@ -205,6 +208,16 @@ const WebView = () => {
                 </div>
             </div>
         </div>;`;
+
+      let starImg = document.createElement("img");
+      starImg.className = "starImg";
+      if (el.star) {
+        starImg.src = require("../assets/fullStar.png");
+      } else {
+        starImg.src = require("../assets/emptyStar.png");
+      }
+      content = content.replace("<imglocation>", `${starImg.outerHTML}`);
+
       /*  위 div 방식을 아래처럼 바꿔야할 것 같아요
         var content = document.createElement('div');
         content.setAttribute('class','wrap');
