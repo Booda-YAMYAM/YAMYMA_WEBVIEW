@@ -9,6 +9,22 @@ const { kakao } = window;
 var clickedOverlay = null;
 var selectedMarker = null;
 
+/**
+ * webView에서 RN으로 data를 보내는 함수
+ * 실행시 RN으로 보낸다
+ */
+const requestPermission = () => {
+  if (window.ReactNativeWebView) {
+    // 모바일이라면 모바일의 카메라 권한을 물어보는 액션을 전달합니다.
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({ type: "REQ_CAMERA_PERMISSION" })
+    );
+  } else {
+    // 모바일이 아니라면 모바일 아님을 alert로 띄웁니다.
+    alert({ message: "" });
+  }
+};
+
 /*  Data 변수명
 
     RESTARANT_ID: 1,
@@ -199,5 +215,7 @@ const WebView = () => {
     </div>
   );
 };
+
+requestPermission();
 
 export default WebView;
