@@ -17,11 +17,11 @@ const requestPermission = () => {
   if (window.ReactNativeWebView) {
     // 모바일이라면 모바일의 카메라 권한을 물어보는 액션을 전달합니다.
     window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: "REQ_CAMERA_PERMISSION" })
+      JSON.stringify({ type: "REQ_CAMERA_PERMISSION_HI_HELLO" })
     );
   } else {
     // 모바일이 아니라면 모바일 아님을 alert로 띄웁니다.
-    alert({ message: "" });
+    console.log("모바일이 아님");
   }
 };
 
