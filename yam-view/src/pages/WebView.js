@@ -40,7 +40,7 @@ const requestPermission = () => {
     DATE_CREATED: Date(), */
 
 const WebView = () => {
-  const [result, setResult] = useState({ tagList: "", openTime: "", dist: "" });
+  const [result, setResult] = useState({});
 
   /** react native 환경에서만 가능 */
   const onMessageHandler = (e) => {
