@@ -40,8 +40,33 @@ const requestPermission = () => {
     DATE_CREATED: Date(), */
 
 const WebView = () => {
+  const [category, setCategory] = useState("전체");
+
+  /** react native 환경에서만 가능 */
+  const onMessageHandler = (e) => {
+    const event = JSON.parse(e.data);
+    window.ReactNativeWebView.postMessage(JSON.stringify({ event: event }));
+    if (event.changeText) {
+      setCategory(event.changeText);
+      alert(event.changeText);
+    }
+  };
+
   useEffect(() => {
     mapscript();
+
+    const isUIWebView = () => {
+      return navigator.userAgent
+        .toLowerCase()
+        .match(/\(ip.*applewebkit(?!.*(version|crios))/);
+    };
+
+    const receiver = isUIWebView() ? window : document;
+
+    receiver.addEventListener("message", onMessageHandler);
+    return () => {
+      receiver.removeEventListener("message", onMessageHandler);
+    };
   }, []);
 
   const mapscript = () => {
