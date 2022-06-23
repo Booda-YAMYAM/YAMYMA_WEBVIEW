@@ -295,16 +295,8 @@ const WebView = () => {
         console.log(document.querySelector(".detail"));
         document.querySelector(".detail").addEventListener("click", (e) => {
           console.log(e.target);
-
-          const makrUp = `
-          <div class="modal">
-          <div class="modal_content">
-            안녕하세요 여러분?
-          </div>
-          </div>
-          `;
-
-          document.body.appendChild(makrUp);
+          // 상세보기 누르면 모달창이 나옴
+          // 이쪽에 작성하면 될듯!
         });
 
         clickedOverlay = overlay;
