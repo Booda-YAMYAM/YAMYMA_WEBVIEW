@@ -29,7 +29,7 @@
 
 - 마커 클릭 시, 해당 업체의 상세 정보(업체 이름, 운영시간, 메뉴 등) 표시
 <p>
- <img width="120" alt="식당표시" src="https://user-images.githubusercontent.com/52441923/175380376-293b67f6-8a3a-47d4-bf9a-d006f3dcdc22.PNG">
+ <img width="150" alt="식당표시" src="https://user-images.githubusercontent.com/52441923/175380376-293b67f6-8a3a-47d4-bf9a-d006f3dcdc22.PNG">
  </p>
 <br>
 
@@ -38,7 +38,7 @@
 - 한식, 양식, 중식, 일식
 - 지정한 종류의 식당만 지도에 표시
 <p>
- <img width="120" alt="식당필터링" src="https://user-images.githubusercontent.com/52441923/175381144-885d52b8-f731-4184-b797-8ac8a620256b.PNG">
+ <img width="150" alt="식당필터링" src="https://user-images.githubusercontent.com/52441923/175381144-885d52b8-f731-4184-b797-8ac8a620256b.PNG">
 </p>
 <br>
 
@@ -46,7 +46,7 @@
 
 - 결식 아동들은 사장님에게 ❤를 눌러 감사 표시
 <p>
- <img width="120" alt="하트" src="https://user-images.githubusercontent.com/52441923/175380728-4b873d45-fe04-4778-8d1d-ef3d5c3685d8.PNG">
+ <img width="150" alt="하트" src="https://user-images.githubusercontent.com/52441923/175380728-4b873d45-fe04-4778-8d1d-ef3d5c3685d8.PNG">
 </p>
 <br>
 
@@ -55,7 +55,7 @@
 ## **🎁 UI**
 
 <p>
- <img width="1000" alt="quizmaker_gif" src="https://user-images.githubusercontent.com/52441923/175372652-4f883744-9108-42b9-bf9d-60148182fe3b.png">
+ <img width="800" alt="quizmaker_gif" src="https://user-images.githubusercontent.com/52441923/175372652-4f883744-9108-42b9-bf9d-60148182fe3b.png">
 </p>
      
 <br>
@@ -63,7 +63,7 @@
 ## **📌 Software Design**
 
 <p align="center">  
-  <img src="https://user-images.githubusercontent.com/52441923/175373706-97e26132-788a-4f35-af6f-3cd98df8e3e4.png">
+  <img width="500" src="https://user-images.githubusercontent.com/52441923/175373706-97e26132-788a-4f35-af6f-3cd98df8e3e4.png">
 </p>
 
 <br>
