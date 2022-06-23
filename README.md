@@ -50,6 +50,8 @@
 </p>
 <br>
 
+## **▶ 결과**
+
 ## **🎁 UI**
 
 <p>
@@ -68,15 +70,14 @@
 
 ## **🛠 Tech Stack**
 
-| 분류 | 기술 |
-| :--- | :--- |
+<br>
 
-|
-| Frontend | ![react](https://img.shields.io/badge/react-gray?logo=react) ![reactNative](https://img.shields.io/badge/react-gray?logo=react) ![Javascript](https://img.shields.io/badge/javascript-ES6+-yellow?logo=javascript) ![Styled-components](https://img.shields.io/badge/styled_components-gray?logo=styled-components) ![kakomap](https://img.shields.io/badge/kakaoMap-gray?logo=Kakao) ![Webpack](https://img.shields.io/badge/webPack-gray?logo=Webpack) |
-| Backend | ![Flask](https://img.shields.io/badge/flask-1.1.2-green?logo=flask) ![Java](https://img.shields.io/badge/java-grey?logo=python) ![Spring](https://img.shields.io/badge/spring-gray?logo=spring) ![Postman](https://img.shields.io/badge/postman-gray?logo=postman) |
-| DB | ![SQLite](https://img.shields.io/badge/sqlite-gray?logo=sqlite) |
-| Etc | ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-gray?logo=visual-studio-code)
-
+| 분류          | 기술                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Frontend](frontend/README.md)     | ![react](https://img.shields.io/badge/react-gray?logo=react) ![reactNative](https://img.shields.io/badge/reactnative-gray?logo=react)   ![Javascript](https://img.shields.io/badge/javascript-ES6+-yellow?logo=javascript) ![Styled-components](https://img.shields.io/badge/styled_components-gray?logo=styled-components)   ![kakomap](https://img.shields.io/badge/kakaoMap-gray?logo=Kakao)   ![Webpack](https://img.shields.io/badge/webPack-gray?logo=Webpack)                                                                                                              |
+| [Backend](backend/README.md)      | ![Java](https://img.shields.io/badge/java-grey?logo=python) ![Spring](https://img.shields.io/badge/spring-gray?logo=spring) ![Postman](https://img.shields.io/badge/postman-gray?logo=postman)   |
+| DB                             | ![SQLite](https://img.shields.io/badge/sqlite-gray?logo=sqlite)                                                                                                                                                                    |
+| Etc           | ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-gray?logo=visual-studio-code)  |
 <br>
 
 ## **🔑 Installation**
@@ -122,7 +123,7 @@
 - refactor : 코드 리팩토링에 대한 커밋
 - test : 테스트 코드 수정에 대한 커밋
 
-### 3. Subject
+### 2. Subject
 
 예시
 
@@ -131,7 +132,7 @@ feat: 알람 기능 추가
 refactor: 알람 기능 등록 모듈 분리
 ```
 
-### 4. Body
+### 3. Body
 
 - 본문은 한글로 작성한다.
 
