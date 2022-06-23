@@ -90,7 +90,7 @@
 - Clone Repository
 
   ```bash
-  git clone https://github.com/2021-Team-E/Mandoo.git
+  git clone https://github.com/Booda-YAMYAM/YAMYMA_WEBVIEW.git
   ```
 
 <br>
