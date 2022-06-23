@@ -51,7 +51,7 @@ const WebView = () => {
   });
 
   const [reRender, setReRender] = useState(false);
-
+  const [drawer, setDrawer] = useState(false);
   /** react native 환경에서만 가능 */
   const onMessageHandler = (e) => {
     const event = JSON.parse(e.data);
@@ -62,6 +62,9 @@ const WebView = () => {
         openTime: event.openTime,
         dist: event.dist,
       });
+      if (event.drawer) {
+        setDrawer(event.drawer);
+      }
     }
   };
 
@@ -369,7 +372,7 @@ const WebView = () => {
                 }
 
                 if (e.target.className === "heart_btn") {
-                  return alert("사장님께 감사의 하트를 보내셨습니다");
+                  return alert("♥️사장님께 감사의 하트를 보내습니다♥️");
                 }
               });
           }
