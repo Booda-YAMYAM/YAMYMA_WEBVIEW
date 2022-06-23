@@ -6,6 +6,7 @@ import DetailModal from "../components/DetiaModal";
 import $ from "jquery";
 import { filterTag } from "../utils/filterTag";
 import { findCategoryEtoK, findCategoryKtoE } from "../utils/findCategory";
+import heartModal from "../components/Modals/heartModal";
 
 const { kakao } = window;
 
@@ -49,6 +50,8 @@ const WebView = () => {
     dist: "",
   });
 
+  const [modalOpen, setModalOpen] = useState(false);
+
   /** react native 환경에서만 가능 */
   const onMessageHandler = (e) => {
     const event = JSON.parse(e.data);
@@ -78,6 +81,16 @@ const WebView = () => {
       receiver.removeEventListener("message", onMessageHandler);
     };
   }, [result]);
+
+  // 모달 여는 함수
+  const openModalFunc = () => {
+    setModalOpen(true);
+  };
+
+  // 모달 닫는 함수
+  const closeModalFunc = () => {
+    setModalOpen(false);
+  };
 
   const mapscript = () => {
     var container = document.getElementById("Mymap"),
@@ -276,6 +289,7 @@ const WebView = () => {
       // 맵을 눌렀을때 마커 삭제
       // kakao.maps.event.addListener(map, "click", () => {
       //   overlay.setMap(null);
+      //   marker.setImage(yellow_img);
       // });
 
       kakao.maps.event.addListener(marker, "click", function () {
