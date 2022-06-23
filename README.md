@@ -1,4 +1,4 @@
-# <img width="50" alt="icon" src="https://user-images.githubusercontent.com/52441923/175349119-cb307600-517f-4446-9775-c3c1388f61f8.png"> <img width="130" alt="icon" src="https://user-images.githubusercontent.com/52441923/175375155-dd9c8de9-e663-436c-8822-82eec0f3d2e2.png">
+# <img width="60" alt="icon" src="https://user-images.githubusercontent.com/52441923/175349119-cb307600-517f-4446-9775-c3c1388f61f8.png"> <img width="130" alt="icon" src="https://user-images.githubusercontent.com/52441923/175375155-dd9c8de9-e663-436c-8822-82eec0f3d2e2.png">
 
 ## **👀 What is YamYam?**
 
@@ -29,7 +29,7 @@
 
 - 마커 클릭 시, 해당 업체의 상세 정보(업체 이름, 운영시간, 메뉴 등) 표시
 <p>
- <img width="150" alt="식당표시" src="https://user-images.githubusercontent.com/52441923/175380376-293b67f6-8a3a-47d4-bf9a-d006f3dcdc22.PNG">
+ <img width="230" alt="식당표시" src="https://user-images.githubusercontent.com/52441923/175380376-293b67f6-8a3a-47d4-bf9a-d006f3dcdc22.PNG">
  </p>
 <br>
 
@@ -38,7 +38,7 @@
 - 한식, 양식, 중식, 일식
 - 지정한 종류의 식당만 지도에 표시
 <p>
- <img width="150" alt="식당필터링" src="https://user-images.githubusercontent.com/52441923/175381144-885d52b8-f731-4184-b797-8ac8a620256b.PNG">
+ <img width="230" alt="식당필터링" src="https://user-images.githubusercontent.com/52441923/175381144-885d52b8-f731-4184-b797-8ac8a620256b.PNG">
 </p>
 <br>
 
@@ -46,11 +46,12 @@
 
 - 결식 아동들은 사장님에게 ❤를 눌러 감사 표시
 <p>
- <img width="150" alt="하트" src="https://user-images.githubusercontent.com/52441923/175380728-4b873d45-fe04-4778-8d1d-ef3d5c3685d8.PNG">
+ <img width="230" alt="하트" src="https://user-images.githubusercontent.com/52441923/175380728-4b873d45-fe04-4778-8d1d-ef3d5c3685d8.PNG">
 </p>
 <br>
 
 ## **▶ 결과**
+<br>
 
 ## **🎁 UI**
 
