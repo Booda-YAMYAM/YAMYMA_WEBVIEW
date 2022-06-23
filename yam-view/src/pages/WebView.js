@@ -1,6 +1,5 @@
 /* global kakao */
 import React, { createElement, useEffect, useState } from "react";
-import { dummyData, markerdata } from "../components/Data/markerData";
 import "./WebView.css";
 import DetailModal from "../components/DetiaModal";
 import $ from "jquery";
@@ -82,11 +81,11 @@ const WebView = () => {
     };
   }, [result, reRender]);
 
-  const mapscript = () => {
+  const mapscript = async () => {
     var container = document.getElementById("Mymap"),
       options = {
-        center: new kakao.maps.LatLng(37.624915253753194, 127.15122688059974),
-        level: 3,
+        center: new kakao.maps.LatLng(37.5333461, 126.9935239),
+        level: 4,
       };
 
     // 이유는 모르겠으나 ㅠㅠ map이 너무 많이 생겨 있어서 삭제합니다!
@@ -136,6 +135,9 @@ const WebView = () => {
     map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 
     let data;
+    let dummyData = await fetch("/DUMMY_DATA.json").then((res) => res.json());
+
+    console.log(dummyData);
     // 음식점 data map
     if (result.tagList) {
       let categoryList = result.tagList
