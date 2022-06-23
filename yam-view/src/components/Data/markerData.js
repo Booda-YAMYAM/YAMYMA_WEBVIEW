@@ -1,9 +1,116 @@
 // latitude : y축
 // longitude : x축
 
+//template
+// restaurantId: 1,
+//     restaurantName: "콜드스퀘어", // 이름
+//     restaurantNumber: "010-1111-1111", // 전화번호
+//     y_coordinate: 37.62197524055062, // 위도
+//     x_coordinate: 127.16017523675508, // 경도
+//     address: "대전광역시 00구 00동",
+//     heart: 3,
+//     category: "korea",
+//     menus: [
+//       {
+//         menuId: 1,
+//         menuName: "비빔밥",
+//         price: 10000,
+//         category: "korea",
+//         menuNum: 0,
+//       },
+//     ],
+//     OPEN_TIME: "오전 11:00 ~ 오후 11:00",
+//     SECTOR: "분식",
+//     MAIN_MENU: "돼지국밥, 돼지찜, 돼지전골",
+//     LAST_UPDATED: Date(),
+//     DATE_CREATED: Date(),
+//
+export const dummyData = [
+  {
+    restaurantId: 1,
+    restaurantName: "한국집", // 이름
+    restaurantNumber: "010-1111-1111", // 전화번호
+    y_coordinate: 37.62197524055062, // 위도
+    x_coordinate: 127.16017523675508, // 경도
+    address: "대전광역시 00구 00동",
+    heart: 3,
+    star: true,
+    category: "korea",
+    menus: [
+      {
+        menuId: 1,
+        menuName: "비빔밥",
+        price: 10000,
+        category: "korea",
+        menuNum: 0,
+      },
+    ],
+  },
+  {
+    restaurantId: 2,
+    restaurantName: "카페", // 이름
+    restaurantNumber: "010-1111-1111", // 전화번호
+    y_coordinate: 37.620842424005616, // 위도
+    x_coordinate: 127.1583774403176, // 경도
+    address: "대전광역시 00구 00동",
+    heart: 3,
+    star: true,
+    category: "cafe",
+    menus: [
+      {
+        menuId: 1,
+        menuName: "비빔밥",
+        price: 10000,
+        category: "korea",
+        menuNum: 0,
+      },
+    ],
+  },
+  {
+    restaurantId: 1,
+    restaurantName: "일본집", // 이름
+    restaurantNumber: "010-1111-1111", // 전화번호
+    y_coordinate: 37.624915253753194, // 위도
+    x_coordinate: 127.15122688059974, // 경도
+    address: "대전광역시 00구 00동",
+    heart: 3,
+    star: false,
+    category: "japan",
+    menus: [
+      {
+        menuId: 1,
+        menuName: "비빔밥",
+        price: 10000,
+        category: "korea",
+        menuNum: 0,
+      },
+    ],
+  },
+  {
+    restaurantId: 3,
+    restaurantName: "중국집", // 이름
+    restaurantNumber: "010-1111-1111", // 전화번호
+    y_coordinate: 37.62456273069659, // 위도
+    x_coordinate: 127.15211256646381, // 경도
+    address: "대전광역시 00구 00동",
+    heart: 3,
+    star: false,
+    category: "china",
+    menus: [
+      {
+        menuId: 1,
+        menuName: "비빔밥",
+        price: 10000,
+        category: "korea",
+        menuNum: 0,
+      },
+    ],
+  },
+];
+
 export const markerdata = [
   {
-    RESTARANT_ID: 1,
+    RESTARANT_ID: 4,
     USER_ID: 1,
     NAME: "콜드스퀘어", // 이름
     PHONE_NUMBER: "010-1111-1111", // 전화번호

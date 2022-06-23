@@ -1,8 +1,11 @@
 /* global kakao */
 import React, { createElement, useEffect, useState } from "react";
-import { markerdata } from "../components/Data/markerData";
 import "./WebView.css";
+import DetailModal from "../components/DetiaModal";
 import $ from "jquery";
+import { filterTag } from "../utils/filterTag";
+import { findCategoryEtoK, findCategoryKtoE } from "../utils/findCategory";
+import { wait } from "../utils/wait";
 
 const { kakao } = window;
 
@@ -17,11 +20,11 @@ const requestPermission = () => {
   if (window.ReactNativeWebView) {
     // 모바일이라면 모바일의 카메라 권한을 물어보는 액션을 전달합니다.
     window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: "REQ_CAMERA_PERMISSION" })
+      JSON.stringify({ type: "REQ_CAMERA_PERMISSION_HI_HELLO" })
     );
   } else {
     // 모바일이 아니라면 모바일 아님을 alert로 띄웁니다.
-    alert({ message: "" });
+    console.log("모바일이 아님");
   }
 };
 
@@ -40,15 +43,49 @@ const requestPermission = () => {
     DATE_CREATED: Date(), */
 
 const WebView = () => {
+  const [result, setResult] = useState({
+    tagList: "",
+    openTime: "",
+    dist: "",
+  });
+
+  const [reRender, setReRender] = useState(false);
+
+  /** react native 환경에서만 가능 */
+  const onMessageHandler = (e) => {
+    const event = JSON.parse(e.data);
+    window.ReactNativeWebView.postMessage(JSON.stringify({ event: event }));
+    if (event) {
+      setResult({
+        tagList: event.tagList,
+        openTime: event.openTime,
+        dist: event.dist,
+      });
+    }
+  };
+
   useEffect(() => {
     mapscript();
-  }, []);
 
-  const mapscript = () => {
+    const isUIWebView = () => {
+      return navigator.userAgent
+        .toLowerCase()
+        .match(/\(ip.*applewebkit(?!.*(version|crios))/);
+    };
+
+    const receiver = isUIWebView() ? window : document;
+
+    receiver.addEventListener("message", onMessageHandler);
+    return () => {
+      receiver.removeEventListener("message", onMessageHandler);
+    };
+  }, [result, reRender]);
+
+  const mapscript = async () => {
     var container = document.getElementById("Mymap"),
       options = {
-        center: new kakao.maps.LatLng(37.624915253753194, 127.15122688059974),
-        level: 3,
+        center: new kakao.maps.LatLng(37.5333461, 126.9935239),
+        level: 4,
       };
 
     // 이유는 모르겠으나 ㅠㅠ map이 너무 많이 생겨 있어서 삭제합니다!
@@ -97,11 +134,26 @@ const WebView = () => {
     var zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 
+    let data;
+    let dummyData = await fetch("/DUMMY_DATA.json").then((res) => res.json());
+
+    console.log(dummyData);
     // 음식점 data map
-    markerdata.map((el, index) => {
+    if (result.tagList) {
+      let categoryList = result.tagList
+        .split(",")
+        .map((el) => findCategoryKtoE(el));
+      let filterData = filterTag(dummyData, categoryList);
+
+      data = [...filterData];
+    } else {
+      data = [...dummyData];
+    }
+
+    data.map((el, index) => {
       var markerPosition = new kakao.maps.LatLng(
-        el.Y_COORDINATE,
-        el.X_COORDINATE
+        el.y_coordinate,
+        el.x_coordinate
       );
 
       var marker = createImageMarker(
@@ -116,10 +168,13 @@ const WebView = () => {
                 <div class="title" >
                     <div class="yellowLine"></div>
                      <div class="name">
-        ${el.NAME} 
+        ${el.restaurantName} 
         </div>
         <div class="sector">
-        ${el.SECTOR}
+        ${findCategoryEtoK(el.category)}
+        </div>
+        <div class='star'>
+        <imglocation>
         </div>
         </div>
                 <div class="body">
@@ -129,7 +184,7 @@ const WebView = () => {
                         연락처
                         </div>
                         <div class="phone_number">
-                          ${el.PHONE_NUMBER}
+                          ${el.restaurantNumber}
                           </div>
                         </div>
                       <div class = "open row">
@@ -137,7 +192,7 @@ const WebView = () => {
                         영업시간
                         </div>
                         <div class="open_time">
-                        ${el.OPEN_TIME}
+                        ${`오전 9시 ~ 오후 6시`}
                         </div>
                       </div>
                       <div class = "menu row">
@@ -145,16 +200,36 @@ const WebView = () => {
                         대표메뉴
                         </div>
                         <div class="main_menu">
-                        ${el.MAIN_MENU}
+                        ${el.menus.map((el) => el.menuName).join(" , ")}
                         </div>
                       </div>
-                      <div class="detail">
-                      <a herf="${el.DETAIL_URL}" target="_blank">가게 자세히 보러가기</a>
+                      <div class="detail" data-index="${el.restaurantId}">
+                      <link>
                       </div>
                     </div>
                 </div>
             </div>
         </div>;`;
+
+      let starImg = document.createElement("img");
+      starImg.className = "starImg";
+      if (el.star) {
+        starImg.src = require("../assets/fullStar.png");
+      } else {
+        starImg.src = require("../assets/emptyStar.png");
+      }
+
+      let link = document.createElement("a");
+      link.className = "link";
+      link.textContent = "상세보기";
+      link.setAttribute("data-index", el.restaurantId);
+
+      // link.setAttribute("onclick", `${alert("상세보기")}`);
+
+      content = content.replace("<link>", `${link.outerHTML}`);
+
+      content = content.replace("<imglocation>", `${starImg.outerHTML}`);
+
       /*  위 div 방식을 아래처럼 바꿔야할 것 같아요
         var content = document.createElement('div');
         content.setAttribute('class','wrap');
@@ -182,9 +257,9 @@ const WebView = () => {
       }
 
       // 맵을 눌렀을때 마커 삭제
-      kakao.maps.event.addListener(map, "click", () => {
-        overlay.setMap(null);
-      });
+      // kakao.maps.event.addListener(map, "click", () => {
+      //   overlay.setMap(null);
+      // });
 
       kakao.maps.event.addListener(marker, "click", function () {
         if (clickedOverlay) {
@@ -200,6 +275,140 @@ const WebView = () => {
         }
 
         overlay.setMap(map);
+
+        document.querySelector(".wrap").addEventListener("click", async (e) => {
+          // 상세보기 눌렸을대
+          if (e.target.className === "link") {
+            const markUp = `
+          <div class="background">
+          <div class="window">
+            <div class="popup">
+              <button id="close">▾</button>
+              <div class="popup_content">
+                <div class="popup_title">
+                  <div class="popup_title_text">
+                    ${el.restaurantName}
+                  </div>
+                  <div class="popup_title_detial">
+                  <div class="popup_title_sctor">
+                    ${findCategoryEtoK(el.category)}
+                  </div>
+                  <div class="popup_title_star">
+                    <span>즐겨찾기</span><img class="starImg" src="${
+                      el.star
+                        ? require("../assets/fullStar.png")
+                        : require("../assets/emptyStar.png")
+                    }" />
+                    </div>
+                    </div>
+                    </div>
+
+                  <div class="popup_body">
+                    <div class="Prow">
+                      <div class="detail_title">연락처</div>
+                      <div class="detail_content">${el.restaurantNumber}</div>
+                    </div>
+                    <div class="Prow">
+                      <div class="detail_title">영업 시간</div>
+                      <div class="detail_content">매일 오전 8시-오후 11시</div>
+                    </div>
+                    <div class="Prow">
+                      <div class="detail_title">가게 주소</div>
+                      <div class="detail_content">
+                        ${el.address}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bottom row">
+                    <button class="heart_btn">
+                      사장님께 감사의 하트 보내기
+                    </button>
+                  </div>
+
+                  <div class="popup_menu">
+                    <div class="menu_title">대표 메뉴</div> <div class="yellowLine"></div>
+                    <div class="menu_content">
+                      ${el.menus
+                        .map((menu) => {
+                          return `<div class="menu_item">
+                     
+                        <img class="menu_img" src="${menu.imageUrl}" alt="${menu.menuName}" />
+                        <div class="item-detail_row">
+                        <div class="yellowLineH"></div>
+                        <div class="colum">
+                        <div class="menu_name">${menu.menuName}</div>
+                        <div class="menu_price">${menu.price}</div>
+                      </div>`;
+                        })
+                        .join("")}
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+          `;
+
+            document.querySelector(".background")?.remove();
+            document.body.insertAdjacentHTML("beforebegin", markUp);
+            document.querySelector(".background").classList.add("show");
+
+            // 모달을 눌렀을때
+            document
+              .querySelector(".background")
+              .addEventListener("click", (e) => {
+                if (e.target.id === "close") {
+                  document
+                    .querySelector(".background")
+                    .classList.remove("show");
+                }
+
+                if (e.target.className === "heart_btn") {
+                  return alert("사장님께 감사의 하트를 보내셨습니다");
+                }
+              });
+          }
+
+          // 즐겨찾기를 눌렀을때
+          if (e.target.className === "starImg") {
+            const bookmark = `
+            <div class="bookmark">
+            <div class="bookmark_content">
+             <div class="yellowLineB"></div>
+              <div class="bookmark_title">
+                <div class="bookmark_title_text">
+                  ${el.restaurantName}
+                  </div>
+                <div class="bookmark_title_detail">
+                  즐겨찾기에 추가가 되었습니다
+                </div>
+                </div>
+              </div>
+            </div>
+              `;
+            if (!el.star) {
+              el.star = true;
+              document.querySelector(".bookmark")?.remove();
+              document.body.insertAdjacentHTML("beforebegin", bookmark);
+              document.querySelector(".bookmark").classList.add("showMark");
+              await wait(3000);
+              document.querySelector(".bookmark").classList.remove("showMark");
+            } else {
+              el.star = false;
+            }
+            setReRender(!reRender);
+          }
+
+          // 아닐떄
+          if (e.target.className !== "link") {
+            overlay.setMap(null);
+          }
+        });
+
         clickedOverlay = overlay;
         selectedMarker = marker;
 
