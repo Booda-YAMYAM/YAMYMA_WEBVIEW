@@ -35,6 +35,13 @@ const WebView = () => {
         level: 3,
       };
 
+    // 이유는 모르겠으나 ㅠㅠ map이 너무 많이 생겨 있어서 삭제합니다!
+    while (document.getElementById("Mymap").childNodes.length > 1) {
+      document
+        .getElementById("Mymap")
+        .removeChild(document.getElementById("Mymap").childNodes[0]);
+    }
+
     const map = new kakao.maps.Map(container, options);
 
     // blue는 크기 40,40
