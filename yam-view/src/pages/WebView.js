@@ -238,28 +238,6 @@ const WebView = () => {
         closeBtn.appendChild(document.createTextNode('닫기'));
          */
 
-      // const makeModal = () => {
-      //   let modal = document.createElement("div");
-      //   modal.className = "modal";
-      //   modal.setAttribute("data-index", el.restaurantId);
-      //   modal.innerHTML = content;
-      //   modal.style.display = "none";
-      //   modal.style.position = "absolute";
-      //   modal.style.top = "0";
-      //   modal.style.left = "0";
-      //   modal.style.width = "100%";
-      //   modal.style.height = "100%";
-      //   modal.style.backgroundColor = "rgba(0,0,0,0.5)";
-      //   modal.style.zIndex = "1";
-      //   modal.style.textAlign = "center";
-      //   modal.style.paddingTop = "50px";
-      //   modal.style.fontSize = "20px";
-      //   modal.style.color = "white";
-      //   modal.style.fontWeight = "bold";
-
-      //   document.body.appendChild(modal);
-      // };
-
       var overlay = new kakao.maps.CustomOverlay({
         content: content,
         map: map,
@@ -300,89 +278,79 @@ const WebView = () => {
           <div class="background">
           <div class="window">
             <div class="popup">
-              <button id="close">팝업닫기</button>
-            </div>
-          <div>
-          <div>
-          `;
-
-          const temp = `
-          <div class="modal">
-            <div class="body">
-              <div>
-                <img
-                  class="res_img"
-                  src={require("../../assets/restaurantImg.png")}
-                  alt="가게사진"
-                />
-              </div>
-              <div class="detail_container">
-                <div class="top_detail_container">
-                  <div class="top row">
-                    <div class="title">어쩌구 저쩌구 식당</div>
-                    <div class="sector">한식</div>
-                    <div class="bookmark">즐겨찾기</div>
-                    <img
-                      class="star_img"
-                      src={require("../../assets/star.png")}
-                      alt="즐겨찾기사진"
-                    />
+              <button id="close">▾</button>
+              <div class="popup_content">
+                <div class="popup_title">
+                  <div class="popup_title_text">
+                    ${el.restaurantName}
                   </div>
-                  <div class="middle">
-                    <div class="phone row">
-                      <div class="detail_title">연락처</div>
-                      <div class="detail_content">010-0000-0000</div>
+                  <div class="popup_title_detial">
+                  <div class="popup_title_sctor">
+                    ${findCategoryEtoK(el.category)}
+                  </div>
+                  <div class="popup_title_star">
+                    <span>즐겨찾기</span><img class="starImg" src="${
+                      el.star
+                        ? require("../assets/fullStar.png")
+                        : require("../assets/emptyStar.png")
+                    }" />
                     </div>
-                    <div class="open_time row">
+                    </div>
+                    </div>
+
+                  <div class="popup_body">
+                    <div class="Prow">
+                      <div class="detail_title">연락처</div>
+                      <div class="detail_content">${el.restaurantNumber}</div>
+                    </div>
+                    <div class="Prow">
                       <div class="detail_title">영업 시간</div>
                       <div class="detail_content">매일 오전 8시-오후 11시</div>
                     </div>
-                    <div class="open_time row">
+                    <div class="Prow">
                       <div class="detail_title">가게 주소</div>
                       <div class="detail_content">
-                        서울특별시 어쩌구 저쩌동 00-00 0층{" "}
+                        ${el.address}
                       </div>
                     </div>
                   </div>
+
                   <div class="bottom row">
                     <button class="heart_btn">
                       사장님께 감사의 하트 보내기
                     </button>
                   </div>
-                </div>
-                {/* 카테고리 부분 시작*/}
-                <div class="bottom_detail_container">
-                  <div class="menu_container">
-                    <div class="popular_menu_title row">
-                      <div class="category_title">대표 메뉴</div>
-                      <img
-                        src={require("../../assets/lineLeftImg.png")}
-                        alt="동그라미"
-                      />
-                      <div class="yello_line"></div>
-                    </div>
-                    <div class="popular_menu_content ">
-                      <img
-                        src={require("../../assets/popular_menu.png")}
-                        alt="대표메뉴사진"
-                      />
-                      <div class="content_detail row">
-                        <div class="yellowLine"></div>
-                        <div class="text col">
-                          <div>칠색 비빔밥</div>
-                          <div>7,000원</div>
+
+                  <div class="popup_menu">
+                    <div class="menu_title">대표 메뉴</div> <div class="yellowLine"></div>
+                    <div class="menu_content">
+                      ${el.menus
+                        .map((menu) => {
+                          return `<div class="menu_item">
+                     
+                        <img class="menu_img" src="${menu.imageUrl}" alt="${menu.menuName}" />
+                        <div class="item-detail_row">
+                        <div class="yellowLineH"></div>
+                        <div class="colum">
+                        <div class="menu_name">${menu.menuName}</div>
+                        <div class="menu_price">${menu.price}</div>
+                      </div>`;
+                        })
+                        .join("")}
                         </div>
-                      </div>
                     </div>
-                  </div>
+                    </div>
+                    </div>
+                    </div>
                 </div>
-              </div>
             </div>
-        </div>
+            </div>
+            </div>
           `;
 
           // console;
           console.log(document.body);
+          document.querySelector(".background")?.remove();
           document.body.insertAdjacentHTML("beforebegin", markUp);
 
           document.querySelector(".background").classList.add("show");
