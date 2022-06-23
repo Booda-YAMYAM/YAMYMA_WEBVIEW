@@ -47,7 +47,7 @@ export const dummyData = [
     ],
   },
   {
-    restaurantId: 1,
+    restaurantId: 2,
     restaurantName: "카페", // 이름
     restaurantNumber: "010-1111-1111", // 전화번호
     y_coordinate: 37.620842424005616, // 위도
@@ -87,7 +87,7 @@ export const dummyData = [
     ],
   },
   {
-    restaurantId: 1,
+    restaurantId: 3,
     restaurantName: "중국집", // 이름
     restaurantNumber: "010-1111-1111", // 전화번호
     y_coordinate: 37.62456273069659, // 위도
@@ -110,7 +110,7 @@ export const dummyData = [
 
 export const markerdata = [
   {
-    RESTARANT_ID: 1,
+    RESTARANT_ID: 4,
     USER_ID: 1,
     NAME: "콜드스퀘어", // 이름
     PHONE_NUMBER: "010-1111-1111", // 전화번호
