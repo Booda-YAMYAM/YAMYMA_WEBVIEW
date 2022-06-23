@@ -49,6 +49,8 @@ const WebView = () => {
     dist: "",
   });
 
+  const [reRender, setReRender] = useState(false);
+
   /** react native 환경에서만 가능 */
   const onMessageHandler = (e) => {
     const event = JSON.parse(e.data);
@@ -77,7 +79,7 @@ const WebView = () => {
     return () => {
       receiver.removeEventListener("message", onMessageHandler);
     };
-  }, [result]);
+  }, [result, reRender]);
 
   const mapscript = () => {
     var container = document.getElementById("Mymap"),
@@ -270,11 +272,11 @@ const WebView = () => {
         }
 
         overlay.setMap(map);
-        console.log(document.querySelector(".detail"));
-        document.querySelector(".detail").addEventListener("click", (e) => {
-          console.log(e.target);
 
-          const markUp = `
+        document.querySelector(".wrap").addEventListener("click", (e) => {
+          // 상세보기 눌렸을대
+          if (e.target.className === "link") {
+            const markUp = `
           <div class="background">
           <div class="window">
             <div class="popup">
@@ -348,16 +350,38 @@ const WebView = () => {
             </div>
           `;
 
-          // console;
-          console.log(document.body);
-          document.querySelector(".background")?.remove();
-          document.body.insertAdjacentHTML("beforebegin", markUp);
+            document.querySelector(".background")?.remove();
+            document.body.insertAdjacentHTML("beforebegin", markUp);
+            document.querySelector(".background").classList.add("show");
 
-          document.querySelector(".background").classList.add("show");
+            // 모달을 눌렀을때
+            document
+              .querySelector(".background")
+              .addEventListener("click", (e) => {
+                if (e.target.id === "close") {
+                  document
+                    .querySelector(".background")
+                    .classList.remove("show");
+                }
 
-          document.querySelector("#close").addEventListener("click", () => {
-            document.querySelector(".background").classList.remove("show");
-          });
+                if (e.target.className === "heart_btn") {
+                  return alert("사장님께 감사의 하트를 보내셨습니다");
+                }
+              });
+          }
+
+          // 즐겨찾기를 눌렀을때
+          if (e.target.className === "starImg") {
+            alert("즐겨찾기를 선택하셨습니다.");
+            el.star = !el.star;
+            setReRender(!reRender);
+            return;
+          }
+
+          // 아닐떄
+          if (e.target.className !== "link") {
+            overlay.setMap(null);
+          }
         });
 
         clickedOverlay = overlay;
