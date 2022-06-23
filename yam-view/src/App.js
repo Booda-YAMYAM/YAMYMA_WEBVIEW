@@ -1,43 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import WebView from "./pages/WebView";
 import axios from "axios";
 
 //axios.defaults.withCredentials = true;
-/**
- * RN에서 온 정보를 듣는 함수
- */
-const RNListener = () => {
-  /** react native 환경에서만 가능 */
-  const listener = (event) => {
-    const { data, type } = JSON.parse(event.data);
-    if (type === "RN_TO_YAM_VIEW") {
-      console.log("RN_TO_YAM_VIEW", data);
-    }
 
-    if (type === "TOKEN") {
-      // type이 TOKEN이기 때문에 이곳에 콘솔이 찍히게 됩니다.
-      console.log(data); // xxxxx
-    } else if (type === "NOTIFICATION") {
-      console.log("NOTIFICATION");
+function App() {
+  // 받아오는 값에 따라 달라지는 tag 값
+  const [textValue, setTextValue] = useState("");
+
+  /** react native 환경에서만 가능 */
+  const onMessageHandler = (e) => {
+    const event = JSON.parse(e.data);
+    window.ReactNativeWebView.postMessage(JSON.stringify({ event: event }));
+    if (event.changeText) {
+      console.log(event.changeText);
+      setTextValue(event.changeText);
     }
   };
 
-  if (window.ReactNativeWebView) {
-    /** android */
-    document.addEventListener("message", listener);
-    /** ios */
-    window.addEventListener("message", listener);
-  } else {
-    // 모바일이 아니라면 모바일 아님을 alert로 띄웁니다.
-    console.log("모바일이 아님");
-  }
-};
+  // tagChange
+  useEffect(() => {
+    const isUIWebView = () => {
+      return navigator.userAgent
+        .toLowerCase()
+        .match(/\(ip.*applewebkit(?!.*(version|crios))/);
+    };
 
-function App() {
+    const receiver = isUIWebView() ? window : document;
+
+    receiver.addEventListener("message", onMessageHandler);
+    return () => {
+      receiver.removeEventListener("message", onMessageHandler);
+    };
+  });
   return (
     <Router>
-      <RNListener />
       <Switch>
         <Route exact path="/" component={WebView} />
       </Switch>
