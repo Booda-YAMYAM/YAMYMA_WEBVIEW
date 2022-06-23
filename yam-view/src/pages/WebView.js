@@ -6,6 +6,7 @@ import DetailModal from "../components/DetiaModal";
 import $ from "jquery";
 import { filterTag } from "../utils/filterTag";
 import { findCategoryEtoK, findCategoryKtoE } from "../utils/findCategory";
+import { wait } from "../utils/wait";
 
 const { kakao } = window;
 
@@ -49,6 +50,8 @@ const WebView = () => {
     dist: "",
   });
 
+  const [reRender, setReRender] = useState(false);
+
   /** react native 환경에서만 가능 */
   const onMessageHandler = (e) => {
     const event = JSON.parse(e.data);
@@ -77,7 +80,7 @@ const WebView = () => {
     return () => {
       receiver.removeEventListener("message", onMessageHandler);
     };
-  }, [result]);
+  }, [result, reRender]);
 
   const mapscript = () => {
     var container = document.getElementById("Mymap"),
@@ -238,28 +241,6 @@ const WebView = () => {
         closeBtn.appendChild(document.createTextNode('닫기'));
          */
 
-      // const makeModal = () => {
-      //   let modal = document.createElement("div");
-      //   modal.className = "modal";
-      //   modal.setAttribute("data-index", el.restaurantId);
-      //   modal.innerHTML = content;
-      //   modal.style.display = "none";
-      //   modal.style.position = "absolute";
-      //   modal.style.top = "0";
-      //   modal.style.left = "0";
-      //   modal.style.width = "100%";
-      //   modal.style.height = "100%";
-      //   modal.style.backgroundColor = "rgba(0,0,0,0.5)";
-      //   modal.style.zIndex = "1";
-      //   modal.style.textAlign = "center";
-      //   modal.style.paddingTop = "50px";
-      //   modal.style.fontSize = "20px";
-      //   modal.style.color = "white";
-      //   modal.style.fontWeight = "bold";
-
-      //   document.body.appendChild(modal);
-      // };
-
       var overlay = new kakao.maps.CustomOverlay({
         content: content,
         map: map,
@@ -292,11 +273,138 @@ const WebView = () => {
         }
 
         overlay.setMap(map);
-        console.log(document.querySelector(".detail"));
-        document.querySelector(".detail").addEventListener("click", (e) => {
-          console.log(e.target);
-          // 상세보기 누르면 모달창이 나옴
-          // 이쪽에 작성하면 될듯!
+
+        document.querySelector(".wrap").addEventListener("click", async (e) => {
+          // 상세보기 눌렸을대
+          if (e.target.className === "link") {
+            const markUp = `
+          <div class="background">
+          <div class="window">
+            <div class="popup">
+              <button id="close">▾</button>
+              <div class="popup_content">
+                <div class="popup_title">
+                  <div class="popup_title_text">
+                    ${el.restaurantName}
+                  </div>
+                  <div class="popup_title_detial">
+                  <div class="popup_title_sctor">
+                    ${findCategoryEtoK(el.category)}
+                  </div>
+                  <div class="popup_title_star">
+                    <span>즐겨찾기</span><img class="starImg" src="${
+                      el.star
+                        ? require("../assets/fullStar.png")
+                        : require("../assets/emptyStar.png")
+                    }" />
+                    </div>
+                    </div>
+                    </div>
+
+                  <div class="popup_body">
+                    <div class="Prow">
+                      <div class="detail_title">연락처</div>
+                      <div class="detail_content">${el.restaurantNumber}</div>
+                    </div>
+                    <div class="Prow">
+                      <div class="detail_title">영업 시간</div>
+                      <div class="detail_content">매일 오전 8시-오후 11시</div>
+                    </div>
+                    <div class="Prow">
+                      <div class="detail_title">가게 주소</div>
+                      <div class="detail_content">
+                        ${el.address}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="bottom row">
+                    <button class="heart_btn">
+                      사장님께 감사의 하트 보내기
+                    </button>
+                  </div>
+
+                  <div class="popup_menu">
+                    <div class="menu_title">대표 메뉴</div> <div class="yellowLine"></div>
+                    <div class="menu_content">
+                      ${el.menus
+                        .map((menu) => {
+                          return `<div class="menu_item">
+                     
+                        <img class="menu_img" src="${menu.imageUrl}" alt="${menu.menuName}" />
+                        <div class="item-detail_row">
+                        <div class="yellowLineH"></div>
+                        <div class="colum">
+                        <div class="menu_name">${menu.menuName}</div>
+                        <div class="menu_price">${menu.price}</div>
+                      </div>`;
+                        })
+                        .join("")}
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+          `;
+
+            document.querySelector(".background")?.remove();
+            document.body.insertAdjacentHTML("beforebegin", markUp);
+            document.querySelector(".background").classList.add("show");
+
+            // 모달을 눌렀을때
+            document
+              .querySelector(".background")
+              .addEventListener("click", (e) => {
+                if (e.target.id === "close") {
+                  document
+                    .querySelector(".background")
+                    .classList.remove("show");
+                }
+
+                if (e.target.className === "heart_btn") {
+                  return alert("사장님께 감사의 하트를 보내셨습니다");
+                }
+              });
+          }
+
+          // 즐겨찾기를 눌렀을때
+          if (e.target.className === "starImg") {
+            const bookmark = `
+            <div class="bookmark">
+            <div class="bookmark_content">
+             <div class="yellowLineB"></div>
+              <div class="bookmark_title">
+                <div class="bookmark_title_text">
+                  ${el.restaurantName}
+                  </div>
+                <div class="bookmark_title_detail">
+                  즐겨찾기에 추가가 되었습니다
+                </div>
+                </div>
+              </div>
+            </div>
+              `;
+            if (!el.star) {
+              el.star = true;
+              document.querySelector(".bookmark")?.remove();
+              document.body.insertAdjacentHTML("beforebegin", bookmark);
+              document.querySelector(".bookmark").classList.add("showMark");
+              await wait(3000);
+              document.querySelector(".bookmark").classList.remove("showMark");
+            } else {
+              el.star = false;
+            }
+            setReRender(!reRender);
+          }
+
+          // 아닐떄
+          if (e.target.className !== "link") {
+            overlay.setMap(null);
+          }
         });
 
         clickedOverlay = overlay;
