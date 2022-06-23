@@ -2,6 +2,7 @@
 import React, { createElement, useEffect, useState } from "react";
 import { dummyData, markerdata } from "../components/Data/markerData";
 import "./WebView.css";
+import DetailModal from "../components/DetiaModal";
 import $ from "jquery";
 import { filterTag } from "../utils/filterTag";
 import { findCategoryEtoK, findCategoryKtoE } from "../utils/findCategory";
@@ -58,8 +59,6 @@ const WebView = () => {
         openTime: event.openTime,
         dist: event.dist,
       });
-      alert(event.tagList);
-      console.log(event);
     }
   };
 
@@ -199,10 +198,8 @@ const WebView = () => {
                         ${el.menus.map((el) => el.menuName).join(" , ")}
                         </div>
                       </div>
-                      <div class="detail">
-                      <a herf="${
-                        el.DETAIL_URL
-                      }" target="_blank">가게 자세히 보러가기</a>
+                      <div class="detail" data-index="${el.restaurantId}">
+                      <link>
                       </div>
                     </div>
                 </div>
@@ -216,6 +213,16 @@ const WebView = () => {
       } else {
         starImg.src = require("../assets/emptyStar.png");
       }
+
+      let link = document.createElement("a");
+      link.className = "link";
+      link.textContent = "상세보기";
+      link.setAttribute("data-index", el.restaurantId);
+
+      // link.setAttribute("onclick", `${alert("상세보기")}`);
+
+      content = content.replace("<link>", `${link.outerHTML}`);
+
       content = content.replace("<imglocation>", `${starImg.outerHTML}`);
 
       /*  위 div 방식을 아래처럼 바꿔야할 것 같아요
@@ -231,6 +238,28 @@ const WebView = () => {
         closeBtn.appendChild(document.createTextNode('닫기'));
          */
 
+      // const makeModal = () => {
+      //   let modal = document.createElement("div");
+      //   modal.className = "modal";
+      //   modal.setAttribute("data-index", el.restaurantId);
+      //   modal.innerHTML = content;
+      //   modal.style.display = "none";
+      //   modal.style.position = "absolute";
+      //   modal.style.top = "0";
+      //   modal.style.left = "0";
+      //   modal.style.width = "100%";
+      //   modal.style.height = "100%";
+      //   modal.style.backgroundColor = "rgba(0,0,0,0.5)";
+      //   modal.style.zIndex = "1";
+      //   modal.style.textAlign = "center";
+      //   modal.style.paddingTop = "50px";
+      //   modal.style.fontSize = "20px";
+      //   modal.style.color = "white";
+      //   modal.style.fontWeight = "bold";
+
+      //   document.body.appendChild(modal);
+      // };
+
       var overlay = new kakao.maps.CustomOverlay({
         content: content,
         map: map,
@@ -245,9 +274,9 @@ const WebView = () => {
       }
 
       // 맵을 눌렀을때 마커 삭제
-      kakao.maps.event.addListener(map, "click", () => {
-        overlay.setMap(null);
-      });
+      // kakao.maps.event.addListener(map, "click", () => {
+      //   overlay.setMap(null);
+      // });
 
       kakao.maps.event.addListener(marker, "click", function () {
         if (clickedOverlay) {
@@ -263,6 +292,21 @@ const WebView = () => {
         }
 
         overlay.setMap(map);
+        console.log(document.querySelector(".detail"));
+        document.querySelector(".detail").addEventListener("click", (e) => {
+          console.log(e.target);
+
+          const makrUp = `
+          <div class="modal">
+          <div class="modal_content">
+            안녕하세요 여러분?
+          </div>
+          </div>
+          `;
+
+          document.body.appendChild(makrUp);
+        });
+
         clickedOverlay = overlay;
         selectedMarker = marker;
 
