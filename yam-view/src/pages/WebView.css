@@ -215,6 +215,59 @@
   right: 15px;
 }
 
+.showMark {
+  opacity: 1;
+  z-index: 1000;
+  transition: all .5s;
+}
+
+.bookmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+  
+  /* 임시 지정 */
+  width: 241px;
+  height: 121px;
+  
+  /* 초기에 약간 아래에 배치 */
+  transform: translate(-50%, -40%);
+}
+
+.showMark .bookmark {
+  transform: translate(-50%, -50%);
+  transition: all .5s;
+}
+
+.bookmark_content{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.bookmark_title_text{
+  width: 100%;
+  font-size: 13px;
+  font-weight: 500;
+}
+.yellowLineB{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 10px;
+  background-color: #ffd75b;
+}
+
+.bookmark_title_detail{
+  font-size: 17px;
+  font-weight: 700;
+}
+
 .background {
   position: fixed;
   top: 0;

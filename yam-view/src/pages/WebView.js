@@ -6,6 +6,7 @@ import DetailModal from "../components/DetiaModal";
 import $ from "jquery";
 import { filterTag } from "../utils/filterTag";
 import { findCategoryEtoK, findCategoryKtoE } from "../utils/findCategory";
+import { wait } from "../utils/wait";
 
 const { kakao } = window;
 
@@ -273,7 +274,7 @@ const WebView = () => {
 
         overlay.setMap(map);
 
-        document.querySelector(".wrap").addEventListener("click", (e) => {
+        document.querySelector(".wrap").addEventListener("click", async (e) => {
           // 상세보기 눌렸을대
           if (e.target.className === "link") {
             const markUp = `
@@ -372,10 +373,32 @@ const WebView = () => {
 
           // 즐겨찾기를 눌렀을때
           if (e.target.className === "starImg") {
-            alert("즐겨찾기를 선택하셨습니다.");
-            el.star = !el.star;
+            const bookmark = `
+            <div class="bookmark">
+            <div class="bookmark_content">
+             <div class="yellowLineB"></div>
+              <div class="bookmark_title">
+                <div class="bookmark_title_text">
+                  ${el.restaurantName}
+                  </div>
+                <div class="bookmark_title_detail">
+                  즐겨찾기에 추가가 되었습니다
+                </div>
+                </div>
+              </div>
+            </div>
+              `;
+            if (!el.star) {
+              el.star = true;
+              document.querySelector(".bookmark")?.remove();
+              document.body.insertAdjacentHTML("beforebegin", bookmark);
+              document.querySelector(".bookmark").classList.add("showMark");
+              await wait(3000);
+              document.querySelector(".bookmark").classList.remove("showMark");
+            } else {
+              el.star = false;
+            }
             setReRender(!reRender);
-            return;
           }
 
           // 아닐떄
