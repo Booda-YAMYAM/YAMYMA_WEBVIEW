@@ -143,3 +143,69 @@
 .custom_zoomcontrol span:first-child {
   border-bottom: 1px solid #bfbfbf;
 }
+
+.title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  background: #fff !important;
+  border: none !important;
+}
+
+.name{
+  align-items: baseline;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.sector{
+  border: solid 2px #FFE082;
+  padding: 0 10px;
+  font-weight: lighter;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.content{
+  font-size: 12px;
+  margin-top: 10px;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+}
+.phone_number{
+  padding-left: 17px;
+}
+
+.open_time{
+  padding-left: 7px;
+}
+
+.main_menu{
+  padding-left: 7px;
+}
+
+.detail{
+  position: absolute;
+  font-size: 8px;
+  right: 0;
+  bottom: 0px;
+  padding-right: 10px;
+  color: #5085bb;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.bold{
+  font-weight: bold;
+}

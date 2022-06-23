@@ -35,6 +35,13 @@ const WebView = () => {
         level: 3,
       };
 
+    // 이유는 모르겠으나 ㅠㅠ map이 너무 많이 생겨 있어서 삭제합니다!
+    while (document.getElementById("Mymap").childNodes.length > 1) {
+      document
+        .getElementById("Mymap")
+        .removeChild(document.getElementById("Mymap").childNodes[0]);
+    }
+
     const map = new kakao.maps.Map(container, options);
 
     // blue는 크기 40,40
@@ -90,21 +97,44 @@ const WebView = () => {
       //overlay content
       var content = `<div class="wrap">
             <div class="info">
-                <div class="title">
+                <div class="title" >
                     <div class="yellowLine"></div>
-                     "<div class="name">
-        ${el.NAME} +
+                     <div class="name">
+        ${el.NAME} 
         </div>
-                    <div class="close" onclick="closeOverlay()" id="close" title="닫기"></div>
-                </div>" +
+        <div class="sector">
+        ${el.SECTOR}
+        </div>
+        </div>
                 <div class="body">
-                    <div class="img">
-                        <img src="https://user-images.githubusercontent.com/52441923/175064993-4101106f-1d37-4158-8307-3a30e81b4020.png" width="73" height="70">
-                   </div>
-                    <div class="desc">
-                        <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>
-                        <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>
-                        <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>
+                    <div class="content">
+                      <div class ="phone row">
+                        <div class="phone text bold">
+                        연락처
+                        </div>
+                        <div class="phone_number">
+                          ${el.PHONE_NUMBER}
+                          </div>
+                        </div>
+                      <div class = "open row">
+                        <div class="open text bold">
+                        영업시간
+                        </div>
+                        <div class="open_time">
+                        ${el.OPEN_TIME}
+                        </div>
+                      </div>
+                      <div class = "menu row">
+                        <div class="menu text bold">
+                        대표메뉴
+                        </div>
+                        <div class="main_menu">
+                        ${el.MAIN_MENU}
+                        </div>
+                      </div>
+                      <div class="detail">
+                      <a herf="${el.DETAIL_URL}" target="_blank">가게 자세히 보러가기</a>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -129,6 +159,16 @@ const WebView = () => {
       });
 
       overlay.setMap(null);
+      // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
+
+      function closeOverlay() {
+        overlay.setMap(null);
+      }
+
+      // 맵을 눌렀을때 마커 삭제
+      kakao.maps.event.addListener(map, "click", () => {
+        overlay.setMap(null);
+      });
 
       kakao.maps.event.addListener(marker, "click", function () {
         if (clickedOverlay) {
